@@ -3,10 +3,9 @@ body{
 }
 
 .container{
-  width: 33%;
+  width: 50%;
   margin:3% auto auto auto;
   padding: 30px;
-  display:table;
 }
 
 .author{
@@ -33,7 +32,6 @@ h1{
 }
 
 .button {
-      height:34px;
       border:none;
       border-radius:3px;
       color:#fff;
@@ -46,21 +44,22 @@ h1{
 
 #new-quote{
   float:right;
+  padding:7px;
+
 }
 
-.tweet-button{
-  height:80px;
-  width:40px;
-}
 .quote{
-    text-align:center;
     height:auto;
-    clear:both;
     font-weight:500;
     font-size:1.75em;
   }
 
+
 i{
   font-size:1.0em;
   margin-right: 0.4em;
+}
+
+#tweet-btn{
+padding: 7px;
 }
