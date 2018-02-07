@@ -1,26 +1,40 @@
-var quote;
-$(document).ready(function(){
-  $.ajaxSetup({cache: false});
-
-  getQuote();
-
-  $("#new-quote").on("click", function(){
-    getQuote();
-  });
-
-   $("#tweet-btn").on("click", function(){
-    tweetQuote();
-  });
-
-  function getQuote() {
-    $.getJSON("https://quotesondesign.com/wp-json/posts? filter[orderby]=rand&filter[posts_per_page]=1", function(a) {
-      $("#quote-text").html(a[0].content.replace(/<.*?>/gm, ''));
-            $("#author-text").html(a[0].title);
-      quote = encodeURIComponent($("#quote-text").text() + " - " + $("#author-text").text());
-      });
-    }
-
-  function tweetQuote(){
-    window.open("https://twitter.com/intent/tweet?&original_referer=https%3A%2F%2Fdev.twitter.com%2Fweb%2Ftweet-button&ref_src=twsrc%5Etfw&related=twitterapi%2Ctwitter&text="+quote);
+var lat, lon, URL;
+var celcius = true;
+var api = "https://fcc-weather-api.glitch.me/api/current?";
+$(document).ready(function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      lat = "lat=" + position.coords.latitude;
+      lon = "lon=" + position.coords.longitude;
+      URL = api + lat + "&" + lon;
+      getWeather(URL);
+    });
   }
 });
+
+$("#tempButton").click(function() {
+  celcius = !celcius;
+    getWeather(URL);
+    console.log("clicked in function");
+});
+
+
+function getWeather(URL) {
+  $.ajax({
+    url: URL,
+    success: function(result) {
+      $("#city").text(result.name + ", ");
+      $("#region").text(result.sys.country);
+      $("#weather").text(result.weather[0].description);
+      if (celcius) {
+        $("#temp").text(result.main.temp + String.fromCharCode(176) + "C");
+      } else {
+        $("#temp").text(
+          result.main.temp * (9 / 5) + 32 + String.fromCharCode(176) + "F"
+        );
+      }
+
+      $("#icon").html('<img src ="' + result.weather[0].icon + '">');
+    }
+  });
+}
